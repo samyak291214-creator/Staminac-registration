@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>STAMINAC AI Registration & Hall Ticket Dashboard</title>
+<style>
+:root{--bg:#050816;--panel:#0d1428;--panel2:#111b35;--line:#263657;--text:#eef4ff;--muted:#9eb0d2;--accent:#64d8ff;--accent2:#9b7bff;--good:#55e6a5;--warn:#ffd166}
+*{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at 20% 0%,#182858 0,#050816 42%),#050816;color:var(--text);font:15px system-ui,Segoe UI,Arial,sans-serif}
+header{padding:24px 28px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:20px;align-items:center;background:#070c1bdf;position:sticky;top:0;z-index:5;backdrop-filter:blur(12px)}
+.brand{display:flex;gap:14px;align-items:center}.logo{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#050816;font-weight:900;font-size:20px}.brand h1{font-size:20px;margin:0}.brand p{margin:2px 0 0;color:var(--muted);font-size:12px}
+nav{display:flex;gap:8px;flex-wrap:wrap}button,.btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:700}button:hover{border-color:var(--accent)}button.primary{background:linear-gradient(135deg,#1b9fc7,#7357d8);border:0}
+main{max-width:1400px;margin:auto;padding:24px}.grid{display:grid;grid-template-columns:1fr 1.2fr;gap:18px}.card{background:linear-gradient(180deg,#0e1730e8,#0a1125e8);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 15px 50px #0005}.card h2{margin:0 0 5px;font-size:17px}.sub{color:var(--muted);font-size:12px;margin-bottom:16px}
+.upload{border:1.5px dashed #4d6a9e;border-radius:14px;padding:24px;text-align:center;background:#081126}.upload strong{display:block;margin-bottom:5px}.upload input{margin-top:12px;max-width:100%}
+.status{display:flex;align-items:center;gap:8px;margin:12px 0;color:var(--good);font-size:12px}.dot{width:8px;height:8px;border-radius:50%;background:var(--good);box-shadow:0 0 12px var(--good)}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field label{display:block;color:var(--muted);font-size:11px;margin-bottom:5px}.field input,.field select{width:100%;background:#080f20;color:var(--text);border:1px solid var(--line);border-radius:9px;padding:10px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.full{grid-column:1/-1}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}.stat{padding:14px;border:1px solid var(--line);border-radius:13px;background:#0b1328}.stat b{font-size:22px}.stat span{display:block;color:var(--muted);font-size:11px;margin-top:3px}
+.preview-wrap{background:#d9dee9;padding:22px;border-radius:14px;overflow:auto}.ticket{width:760px;max-width:100%;min-height:430px;margin:auto;background:white;color:#0a1020;border:5px solid #111b35;position:relative;padding:22px;box-shadow:0 10px 30px #0004}.stars{position:absolute;inset:0;opacity:.08;background-image:radial-gradient(#183b8c 1px,transparent 1px);background-size:18px 18px;pointer-events:none}.ticket-content{position:relative}.ticket-head{text-align:center;border-bottom:2px solid #162449;padding-bottom:12px}.ticket-head h1{margin:0;font-size:27px;letter-spacing:2px}.ticket-head p{margin:4px 0;font-size:11px}.ticket-body{display:grid;grid-template-columns:1fr 135px;gap:18px;margin-top:18px}.photo{height:160px;border:2px dashed #53607b;display:grid;place-items:center;text-align:center;font-size:11px;color:#64708a;background:#f3f5f9}.photo img{width:100%;height:100%;object-fit:cover}.rows{display:grid;grid-template-columns:150px 1fr;gap:8px;font-size:13px}.rows b{color:#53607b}.hall{margin-top:18px;padding:12px;background:#eef4ff;border-radius:9px;text-align:center;font-weight:900;letter-spacing:1px}.footer{margin-top:18px;display:flex;justify-content:space-between;font-size:10px;color:#53607b}
+.table{width:100%;border-collapse:collapse;font-size:12px}.table th,.table td{border-bottom:1px solid var(--line);padding:9px;text-align:left}.table th{color:var(--muted)}.badge{padding:4px 7px;border-radius:8px;background:#152340;color:#a8c9ff}.toast{position:fixed;right:18px;bottom:18px;background:#101b35;border:1px solid var(--line);padding:12px 15px;border-radius:10px;display:none;z-index:10}
+@media(max-width:900px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.formgrid{grid-template-columns:1fr}.full{grid-column:auto}.ticket{width:680px}}
+@media print{
+body{background:white}
+header,main>.stats,#register,#people,.no-print,.upload,.actions,.sub,button{display:none!important}
+#preview{display:block!important}
+#preview .card{border:0;box-shadow:none;padding:0;background:white}
+#preview .card h2{display:none}
+.preview-wrap{padding:0;background:white}
+.ticket{box-shadow:none;margin:0 auto;width:100%;max-width:none;border:4px solid #111b35;page-break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand"><div class="logo">S</div><div><h1>STAMINAC AI REGISTRATION & HALL TICKET</h1><p>Space • Technology • Awareness • Maths • Information • Neutrons/Atomic • Astrophysics • Cosmology</p></div></div>
+ <nav class="no-print"><button onclick="showTab('register')">Registration AI</button><button onclick="showTab('people')">Registered People</button><button onclick="showTab('preview')">Print Preview</button></nav>
+</header>
+<main>
+<div class="stats no-print">
+ <div class="stat"><b id="count">0</b><span>Registered people</span></div><div class="stat"><b>6</b><span>Exam levels</span></div><div class="stat"><b>75</b><span>Questions / level</span></div><div class="stat"><b>2:00</b><span>Exam duration</span></div>
+</div>
+
+<section id="register" class="dashboard">
+<div class="grid">
+<div class="card">
+<h2>🤖 AI Registration Authorisation</h2><div class="sub">Photograph or upload the filled offline registration form. The extracted details remain editable before authorisation.</div>
+<div class="upload">
+<strong>📷 Capture the filled registration form</strong>
+<span style="color:var(--muted);font-size:12px">Allow camera access to photograph the offline registration form, or choose an existing photo.</span>
+<div class="actions" style="justify-content:center">
+<button type="button" class="primary" onclick="openCamera()">📷 Open Camera</button>
+<button type="button" onclick="pickPhoto()">🖼 Choose Photo</button>
+</div>
+<input id="regPhoto" type="file" accept="image/*" capture="environment" style="display:none">
+<div id="cameraPanel" style="display:none;margin-top:14px">
+<video id="cameraVideo" autoplay playsinline muted style="width:100%;max-height:330px;border-radius:12px;background:#000"></video>
+<div class="actions" style="justify-content:center">
+<button type="button" class="primary" onclick="capturePhoto()">📸 Take Picture</button>
+<button type="button" onclick="closeCamera()">Close Camera</button>
+</div>
+<canvas id="cameraCanvas" style="display:none"></canvas>
+</div>
+</div>
+<div class="status"><span class="dot"></span><span id="aiStatus">AI agent ready — waiting for registration form</span></div>
+<div class="formgrid">
+ <div class="field"><label>Student Name</label><input id="name" placeholder="Enter / verify name"></div>
+ <div class="field"><label>Class</label><input id="class" placeholder="5–10"></div>
+ <div class="field"><label>Section</label><input id="section" placeholder="Section"></div>
+ <div class="field"><label>School</label><input id="school" placeholder="School name"></div>
+ <div class="field"><label>Email</label><input id="email" type="email" placeholder="Email"></div>
+ <div class="field"><label>Selected Level</label><select id="level"><option>Level 1 — Class 5</option><option>Level 2 — Class 6</option><option>Level 3 — Class 7</option><option>Level 4 — Class 8</option><option>Level 5 — Class 9</option><option>Level 6 — Class 10</option></select></div>
+ <div class="field"><label>Parent / Guardian Name</label><input id="guardian" placeholder="Name"></div>
+ <div class="field"><label>Registration ID</label><input id="regid" placeholder="Auto-generated"></div>
+</div>
+<div class="actions"><button class="primary" onclick="authorise()">✨ Authorise & Generate Hall Ticket</button><button onclick="clearForm()">Clear</button></div>
+</div>
+
+<div class="card">
+<h2>🪐 Hall Ticket Preview — PRINT READY</h2><div class="sub">This is the exact hall ticket preview that will be printed. Use the button below to open Chrome Print.</div>
+<div class="preview-wrap" id="printArea">
+<div class="ticket" style="border:0;border-radius:18px;overflow:hidden;padding:0;background:#fff">
+<div class="stars"></div><div class="ticket-content">
+<div style="background:linear-gradient(135deg,#081a45,#31206d);color:white;padding:22px 24px;position:relative">
+<div style="font-size:11px;letter-spacing:3px;opacity:.8">SPACE • STEM • DISCOVERY</div>
+<div style="display:flex;justify-content:space-between;align-items:end;gap:12px;margin-top:6px">
+<div><div style="font-size:34px;font-weight:950;letter-spacing:4px">STAMINAC</div><div style="font-size:12px;letter-spacing:1.5px">SPACE & STEM AWARENESS OLYMPIAD</div></div>
+<div style="text-align:right;font-size:10px">OFFICIAL<br><b style="font-size:15px">HALL TICKET</b></div>
+</div>
+</div>
+<div style="padding:22px 24px">
+<div class="ticket-body" style="margin-top:0"><div>
+<div style="font-size:10px;color:#53607b;letter-spacing:1.5px">CANDIDATE DETAILS</div>
+<div class="rows" style="margin-top:10px">
+<b>Candidate</b><span id="pname">—</span><b>Class</b><span id="pclass">—</span><b>Section</b><span id="psection">—</span><b>School</b><span id="pschool">—</span><b>Level</b><span id="plevel">—</span><b>Questions</b><span>75 MCQs</span><b>Duration</b><span>2 Hours</span>
+</div></div><div class="photo" id="photoBox">CANDIDATE<br>PHOTO</div></div>
+<div style="margin-top:18px;padding:15px;border:2px solid #182a58;border-radius:12px;background:#f4f7ff">
+<div style="font-size:10px;color:#53607b;letter-spacing:1.3px">HALL TICKET NUMBER</div>
+<div id="phall" style="font-size:22px;font-weight:950;letter-spacing:2px;margin-top:4px">SSLBSTAMINACLVL12026001</div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;font-size:11px;color:#53607b">
+<div>Exam: STAMINAC Space Olympiad</div><div>Exam time: 2 hours</div>
+<div>Candidate signature: __________________</div><div>Parent/Guardian: __________________</div>
+</div>
+<div class="footer"><span>Bring this hall ticket to the examination.</span><span id="pid">—</span></div>
+</div></div></div></div></div>
+</div>
+<div class="actions no-print"><button class="primary" onclick="printHallTicket()">🖨 Print This Hall Ticket</button><button onclick="downloadTicket()">Save Printable HTML</button></div>
+</div>
+</div>
+</section>
+
+<section id="people" class="dashboard" style="display:none">
+<div class="card"><h2>👥 Registered People</h2><div class="sub">Authorised records created from offline registration forms.</div>
+<table class="table"><thead><tr><th>Hall Ticket</th><th>Name</th><th>Class</th><th>School</th><th>Level</th><th>Status</th></tr></thead><tbody id="peopleBody"></tbody></table></div>
+</section>
+
+<section id="preview" class="dashboard" style="display:none">
+<div class="card"><h2>🖨 Print Centre</h2><div class="sub">Click a registered candidate to open their hall ticket preview. Then use “Print This Hall Ticket”.</div>
+<div class="actions" id="printList"></div>
+</div>
+</section>
+</main>
+<div class="toast" id="toast"></div>
+<script>
+let records=JSON.parse(localStorage.getItem('staminacRecords')||'[]'), currentPhoto='';
+const $=id=>document.getElementById(id);
+function toast(t){$('toast').textContent=t;$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',2200)}
+function showTab(id){document.querySelectorAll('.dashboard').forEach(x=>x.style.display='none');$(id).style.display='block'; if(id==='people')renderPeople(); if(id==='preview')renderPrintList()}
+$('regPhoto').addEventListener('change',e=>{
+ const f=e.target.files[0]; if(!f)return;
+ const r=new FileReader();r.onload=()=>{currentPhoto=r.result;$('photoBox').innerHTML='<img src="'+currentPhoto+'">';$('aiStatus').textContent='AI agent received image — verify extracted fields before authorising.';toast('Registration form image loaded. Verify details.');};r.readAsDataURL(f);
+});
+function hallNo(i,level){let n=String(i+1).padStart(3,'0'), lvl=String(level).charAt(6)||'1';return 'SSLBSTAMINACLVL'+lvl+'2026'+n}
+let cameraStream=null;
+async function openCamera(){
+  const panel=$('cameraPanel'), video=$('cameraVideo');
+  panel.style.display='block';
+  try{
+    cameraStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false});
+    video.srcObject=cameraStream;
+    $('aiStatus').textContent='Camera active — position the registration form and take a clear picture.';
+  }catch(e){
+    panel.style.display='none';
+    toast('Camera access was blocked. Allow camera permission in Chrome and try again.');
+    $('aiStatus').textContent='Camera permission needed. You can also choose an existing photo.';
+  }
+}
+function capturePhoto(){
+  const v=$('cameraVideo'), c=$('cameraCanvas');
+  if(!cameraStream)return;
+  c.width=v.videoWidth||1280;c.height=v.videoHeight||720;
+  c.getContext('2d').drawImage(v,0,0,c.width,c.height);
+  currentPhoto=c.toDataURL('image/jpeg',0.9);
+  $('photoBox').innerHTML='<img src="'+currentPhoto+'">';
+  $('aiStatus').textContent='Registration form captured — verify the editable fields before authorising.';
+  closeCamera();toast('Photo captured successfully.');
+}
+function closeCamera(){
+  if(cameraStream){cameraStream.getTracks().forEach(t=>t.stop());cameraStream=null;}
+  $('cameraVideo').srcObject=null;$('cameraPanel').style.display='none';
+}
+function pickPhoto(){ $('regPhoto').click(); }
+
+function authorise(){
+ const name=$('name').value.trim(); if(!name){toast('Enter or verify the student name first.');return}
+ const rec={name,className:$('class').value,section:$('section').value,school:$('school').value,email:$('email').value,level:$('level').value,guardian:$('guardian').value,photo:currentPhoto};
+ rec.id=hallNo(records.length,rec.level);records.push(rec);localStorage.setItem('staminacRecords',JSON.stringify(records));
+ fillPreview(rec);$('aiStatus').textContent='AI authorisation complete — hall ticket generated.';$('count').textContent=records.length;toast('Hall ticket generated and registered.');showTab('preview');
+}
+function fillPreview(r){$('pname').textContent=r.name||'—';$('pclass').textContent=r.className||'—';$('psection').textContent=r.section||'—';$('pschool').textContent=r.school||'—';$('plevel').textContent=r.level||'—';$('pid').textContent=r.id||'—';$('phall').textContent=r.id||'—';if(r.photo)$('photoBox').innerHTML='<img src="'+r.photo+'">'}
+function clearForm(){['name','class','section','school','email','guardian','regid'].forEach(id=>$(id).value='');$('regPhoto').value='';currentPhoto='';$('photoBox').innerHTML='CANDIDATE<br>PHOTO';$('aiStatus').textContent='AI agent ready — waiting for registration form'}
+function renderPeople(){const b=$('peopleBody');b.innerHTML=records.length?records.map((r,i)=>`<tr><td>${r.id}</td><td>${r.name}</td><td>${r.className||'—'}</td><td>${r.school||'—'}</td><td><span class="badge">${r.level}</span></td><td>Authorised</td></tr>`).join(''):'<tr><td colspan="6">No authorised registrations yet.</td></tr>'}
+function renderPrintList(){
+ const d=$('printList');
+ d.style.display='grid';
+ d.style.gridTemplateColumns='repeat(auto-fit,minmax(240px,1fr))';
+ d.style.gap='12px';
+ d.innerHTML=records.length ? records.map((r,i)=>`
+   <button type="button" onclick="openCandidateTicket(${i})"
+     style="text-align:left;padding:15px;border:1px solid var(--line);border-radius:12px;background:#0b1328">
+     <div style="font-size:15px;font-weight:900">${r.name}</div>
+     <div style="font-size:11px;color:var(--muted);margin-top:5px">${r.id}</div>
+     <div style="font-size:11px;color:#a8c9ff;margin-top:5px">${r.level} • Class ${r.className||'—'}</div>
+     <div style="font-size:11px;color:var(--good);margin-top:9px">▶ Open Hall Ticket Preview</div>
+   </button>`).join('')
+   : '<span style="color:var(--muted)">No registered candidates yet.</span>';
+}
+function openCandidateTicket(i){
+ const r=records[i];
+ fillPreview(r);
+ showTab('preview');
+ toast('Hall ticket opened for '+r.name);
+}
+function printHallTicket(){
+  showTab('preview');
+  setTimeout(()=>window.print(),150);
+}
+function downloadTicket(){const blob=new Blob([document.documentElement.outerHTML],{type:'text/html'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='STAMINAC_Hall_Ticket_Print.html';a.click();URL.revokeObjectURL(a.href)}
+$('count').textContent=records.length;
+if(records.length)fillPreview(records[records.length-1]);
+</script>
+</body>
+</html>
